@@ -132,6 +132,20 @@
 
      }
 
+    function additionalDrawing() {
+      var vert = [0.5, 0.5, 1.5, 2.25];
+      pointsPositionBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, pointsPositionBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vert), gl.STATIC_DRAW);
+      pointsPositionBuffer.itemSize = 2;  // # of dimensions
+      pointsPositionBuffer.numItems = 2;  // #of items
+      gl.bindBuffer(gl.ARRAY_BUFFER, pointsPositionBuffer);  // this seems safe to skip
+      gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, pointsPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+      setMatrixUniforms();
+      gl.lineWidth(1.0);
+      gl.drawArrays(gl.LINES, 0, pointsPositionBuffer.numItems);
+
+    }
 
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -147,6 +161,7 @@
         setMatrixUniforms();
         gl.lineWidth(1.0);
         gl.drawArrays(gl.LINES, 0, pointsPositionBuffer.numItems);
+        additionalDrawing();
 
     }
 
